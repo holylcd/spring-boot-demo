@@ -1,15 +1,16 @@
 package org.holy.spring.boot.quick.controller.v1;
 
 import com.github.pagehelper.PageHelper;
+import org.holy.spring.boot.quick.common.exception.BizException;
+import org.holy.spring.boot.quick.common.http.rest.request.body.CommonPage;
 import org.holy.spring.boot.quick.common.http.rest.response.body.ResponseBodyPage;
 import org.holy.spring.boot.quick.constants.biz.CommonBizStatus;
 import org.holy.spring.boot.quick.domain.UserInfo;
-import org.holy.spring.boot.quick.common.exception.BizException;
-import org.holy.spring.boot.quick.common.http.rest.request.body.CommonPage;
 import org.holy.spring.boot.quick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 
@@ -17,15 +18,15 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * @Description //TODO
- * @Author holyl
- * @Date 2019/9/2 15:46
- * @Version 1.0.0
+ * 用户控制器
+ * @author holy
+ * @date 2019/9/2 15:46
+ * @version 1.0.0
  */
 @RestController
 @RequestMapping(
         value = "user",
-        produces = "application/vnd.tk.mapper.app-v1.0.0+json"
+        produces = "application/vnd.quick.app-v1.0.1+json"
 )
 public class UserController {
 
@@ -39,6 +40,21 @@ public class UserController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseBodyPage<UserInfo> form(@Valid CommonPage commonPage) {
+        PageHelper.startPage(commonPage.getPage(), commonPage.getPrePage());
+        List<UserInfo> userInfos = userService.findAll();
+
+        return ResponseBodyPage
+                .ok(userInfos, commonPage.getPrePage());
+    }
+
+    /**
+     * 普通查询 form / url，需要权限
+     * @param commonPage
+     * @return
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "admin", method = RequestMethod.GET)
+    public ResponseBodyPage<UserInfo> formAdmin(@Valid CommonPage commonPage) {
         PageHelper.startPage(commonPage.getPage(), commonPage.getPrePage());
         List<UserInfo> userInfos = userService.findAll();
 

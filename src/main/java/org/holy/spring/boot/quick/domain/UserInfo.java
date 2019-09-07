@@ -2,6 +2,9 @@ package org.holy.spring.boot.quick.domain;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.holy.spring.boot.quick.constants.type.GenderType;
+import org.holy.spring.boot.quick.handler.GenderTypeHandler;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Id;
 import java.io.Serializable;
@@ -22,6 +25,8 @@ public class UserInfo implements Serializable {
     private String account;
     private String realname;
     private String password;
+    @ColumnType(typeHandler = GenderTypeHandler.class)
+    private String gender;
     private String status;
     private Boolean disabled;
 }

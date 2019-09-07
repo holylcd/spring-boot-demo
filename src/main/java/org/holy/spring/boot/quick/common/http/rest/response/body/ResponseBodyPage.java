@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 业务正常时的响应体，带 page
+ * 业务正常时的响应体，带 type
  * @author holy
  * @email holylcd@foxmail.com
  * @date 2019/4/12

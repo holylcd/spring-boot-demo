@@ -1,6 +1,9 @@
+# server
 server:
   port: 9090
 
+
+#spring
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
@@ -32,12 +35,14 @@ spring:
     # property-naming-strategy: SNAKE_CASE
 
 
+# mybatis
 mybatis:
   mapper-locations: classpath:mybatis/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
 
 
+# pagehelper
 pagehelper:
   helper-dialect: mysql
 
@@ -49,10 +54,18 @@ mapper:
 # logging
 logging:
   file: /var/log/docs/log.log
-  group:
-    service: org.holy.tkmapper
   level:
     root: info
     web: debug
     sql: debug
-    service: debug
+    org.holy.spring.boot.quick: debug
+    org.apache.coyote.http11: debug
+#    org.springframework.web: trace
+
+
+# JWT
+jwt:
+  secret: MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEA5zq+eVxFz3tHBSCY/iaaQ/lTDW15dz0SftdRR830Y5k8Ei7mFM0BxjkDbaOYdpGqMrXSBkYan7VNJ5MjtgP2aQIDAQABAkA4710BMvg5i2hEWe9x/P1VKWoKz17uPkp0kv3/iTXY4+Vhc5s0tPzSIXgHEpsEqvBHinmHIc7GTf5i7wQUErqlAiEA/I2BS6/VcngnZkahpUwXOjqoT3ItnHxskojoqWaG9UsCIQDqYrqiDURRbs7OsAQvbfcRLEgQSI+iUnvRBWlnHQsWmwIgGpQFxGJX0zkj5FaQkmXEmAMuTVYVyL8raexwl8tLbqsCIFC8p4tQxJrEb6qUySxJVdTtivlI9Wk1vn7WvWMOhxZHAiEA3/2XiVMyiA67NmMj7ylBjkNQhJvHYVSfjEdcP5RLr00=
+  ttl-millis: 86400000
+  header-name: Authorization
+  prefix: Bearer

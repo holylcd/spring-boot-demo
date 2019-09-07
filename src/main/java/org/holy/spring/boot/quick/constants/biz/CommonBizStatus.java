@@ -2,10 +2,9 @@ package org.holy.spring.boot.quick.constants.biz;
 
 /**
  * 通用业务状态
- * @Description
- * @Author holyl
- * @Date 2019/9/3 17:02
- * @Version 1.0.0
+ * @author holy
+ * @date 2019/9/3 17:02
+ * @version 1.0.0
  */
 public enum CommonBizStatus implements IBizStatus {
 
