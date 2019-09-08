@@ -2,7 +2,6 @@ package org.holy.spring.boot.quick.domain;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.holy.spring.boot.quick.constants.type.GenderType;
 import org.holy.spring.boot.quick.handler.GenderTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
 

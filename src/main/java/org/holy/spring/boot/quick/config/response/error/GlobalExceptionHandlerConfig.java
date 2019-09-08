@@ -3,9 +3,9 @@ package org.holy.spring.boot.quick.config.response.error;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.holy.spring.boot.quick.common.exception.BizException;
 import org.holy.spring.boot.quick.common.http.rest.response.body.ErrorResponseBody;
 import org.holy.spring.boot.quick.constants.biz.IBizStatus;
-import org.holy.spring.boot.quick.common.exception.BizException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * 全局异常处理
  * @author holy
- * @email holylcd@foxmail.com
  * @date 2019/4/15
+ * @version 1.0.0
  */
 @Slf4j
 @RestControllerAdvice

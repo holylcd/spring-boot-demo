@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * web security config
  * @author holy
  * @version 1.0.0
  * @date 2019/9/5 11:19

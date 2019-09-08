@@ -59,8 +59,10 @@ logging:
     web: debug
     sql: debug
     org.holy.spring.boot.quick: debug
+    # http 请求信息
     org.apache.coyote.http11: debug
-#    org.springframework.web: trace
+    # web trace
+    org.springframework.web: trace
 
 
 # JWT

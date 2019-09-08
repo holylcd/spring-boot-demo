@@ -39,7 +39,7 @@
         <plugin type="org.holy.mybatis.generator.lombok.plugin.LombokPlugin" />
         <!--tk mybatis mapper plugin-->
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="org.holy.spring.boot.quick.common.magger.BaseMapper"/>
+            <property name="mappers" value="org.holy.spring.boot.quick.component.magger.BaseMapper"/>
             <property name="caseSensitive" value="true"/>
         </plugin>
 

@@ -1,6 +1,8 @@
 package org.holy.spring.boot.quick.component.security;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.holy.spring.boot.quick.common.exception.SecurityException;
 import org.holy.spring.boot.quick.component.token.JwtPrincipal;
 import org.holy.spring.boot.quick.component.token.JwtProvider;
 import org.holy.spring.boot.quick.component.token.TokenManager;
@@ -44,7 +46,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String token = tokenManager.getTokenFromRequest(request);
 
-		JwtPrincipal principal = jwtProvider.parseJwt(token);
+		JwtPrincipal principal;
+		try {
+			principal = jwtProvider.parseJwt(token);
+		}catch (SecurityException e) {
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			response.setStatus(e.getHttpStatus().value());
+
+			PrintWriter out = response.getWriter();
+
+			JSONObject body = new JSONObject();
+			body.put("code", e.getBizStatus().getCode());
+			body.put("msg", e.getBizStatus().getMsg());
+
+			out.print(body);
+			return;
+		}
+
 
 		Long userId = principal.getUserId();
 

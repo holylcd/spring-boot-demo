@@ -1,8 +1,11 @@
 package org.holy.spring.boot.quick.component.token;
 
 import io.jsonwebtoken.*;
+import org.holy.spring.boot.quick.common.exception.SecurityException;
+import org.holy.spring.boot.quick.constants.biz.CommonBizStatus;
 import org.holy.spring.boot.quick.model.TokenVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -100,15 +103,15 @@ public class JwtProvider {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (UnsupportedJwtException e) {
-            throw new UnsupportedJwtException("非法的登录信息", e);
+            throw new SecurityException(HttpStatus.FORBIDDEN, CommonBizStatus.FORBIDDEN);
         } catch (MalformedJwtException e) {
-            throw new MalformedJwtException("登录信息异常", e);
+            throw new SecurityException(HttpStatus.FORBIDDEN, CommonBizStatus.FORBIDDEN);
         } catch (SignatureException e) {
-            throw new SignatureException("签名异常", e);
+            throw new SecurityException(HttpStatus.FORBIDDEN, CommonBizStatus.FORBIDDEN);
         } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "登录状态已过期");
+            throw new SecurityException(HttpStatus.UNAUTHORIZED, CommonBizStatus.UNAUTHORIZED);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("负载异常", e);
+            throw new SecurityException(HttpStatus.FORBIDDEN, CommonBizStatus.FORBIDDEN);
         }
 
         String userId = claims.getId();
