@@ -9,3 +9,4 @@ JWT + Spring Security authentication(分布式认证方案)
 
 Spring Security access control(按钮级权限控制)
 
+Spring Cache + Redis 分布式缓存方案

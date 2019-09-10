@@ -1,16 +1,20 @@
 package org.holy.spring.boot.quick.controller.v1;
 
 import com.github.pagehelper.PageHelper;
-import org.holy.spring.boot.quick.common.exception.BizException;
+import org.holy.spring.boot.quick.bean.domain.UserDO;
+import org.holy.spring.boot.quick.bean.model.user.UserInfoVO;
+import org.holy.spring.boot.quick.bean.model.user.TokenVO;
+import org.holy.spring.boot.quick.bean.model.user.UserVO;
 import org.holy.spring.boot.quick.common.http.rest.request.body.CommonPage;
+import org.holy.spring.boot.quick.common.http.rest.response.body.ResponseBody;
+import org.holy.spring.boot.quick.common.http.rest.response.body.ResponseBodyData;
 import org.holy.spring.boot.quick.common.http.rest.response.body.ResponseBodyPage;
-import org.holy.spring.boot.quick.constants.biz.CommonBizStatus;
-import org.holy.spring.boot.quick.domain.UserInfo;
+import org.holy.spring.boot.quick.component.security.UserPrincipal;
+import org.holy.spring.boot.quick.constants.rest.Version;
 import org.holy.spring.boot.quick.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 
@@ -26,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping(
         value = "user",
-        produces = "application/vnd.quick.app-v1.0.1+json"
+        produces = Version.V_1_0_0
 )
 public class UserController {
 
@@ -34,17 +38,34 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 普通查询 form / url
-     * @param commonPage
+     * 登录
+     * @param userVO
      * @return
      */
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseBodyPage<UserInfo> form(@Valid CommonPage commonPage) {
-        PageHelper.startPage(commonPage.getPage(), commonPage.getPrePage());
-        List<UserInfo> userInfos = userService.findAll();
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ResponseBodyData<TokenVO> login(@Valid UserVO userVO) {
+        TokenVO tokenVO = userService.login(userVO);
+        return ResponseBodyData.ok(tokenVO);
+    }
 
-        return ResponseBodyPage
-                .ok(userInfos, commonPage.getPrePage());
+    /**
+     * 退出登录
+     * @return
+     */
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public ResponseBody logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        userService.logout(userPrincipal);
+        return ResponseBody.ok();
+    }
+
+    /**
+     * 个人信息
+     * @return
+     */
+    @RequestMapping(value = "info", method = RequestMethod.GET)
+    public ResponseBodyData<UserInfoVO> userInfo(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        UserInfoVO info = userService.info(userPrincipal);
+        return ResponseBodyData.ok(info);
     }
 
     /**
@@ -54,23 +75,9 @@ public class UserController {
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "admin", method = RequestMethod.GET)
-    public ResponseBodyPage<UserInfo> formAdmin(@Valid CommonPage commonPage) {
+    public ResponseBodyPage<UserVO> formAdmin(@Valid CommonPage commonPage) {
         PageHelper.startPage(commonPage.getPage(), commonPage.getPrePage());
-        List<UserInfo> userInfos = userService.findAll();
-
-        return ResponseBodyPage
-                .ok(userInfos, commonPage.getPrePage());
-    }
-
-    /**
-     * 普通查询 json
-     * @param commonPage
-     * @return
-     */
-    @RequestMapping(value = "/body", method = RequestMethod.GET)
-    public ResponseBodyPage<UserInfo> requestBody(@Valid @RequestBody CommonPage commonPage) {
-        PageHelper.startPage(commonPage.getPage(), commonPage.getPrePage());
-        List<UserInfo> userInfos = userService.findAll();
+        List<UserVO> userInfos = userService.findAll();
 
         return ResponseBodyPage
                 .ok(userInfos, commonPage.getPrePage());
@@ -81,37 +88,15 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "order", method = RequestMethod.GET)
-    public ResponseBodyPage<UserInfo> order() {
+    public ResponseBodyPage<UserVO> order() {
         int pageNum = 2, pageSize = 8;
         PageHelper.startPage(pageNum, pageSize);
-        Example example = new Example(UserInfo.class);
+        Example example = new Example(UserDO.class);
         example.setOrderByClause("realname");
-        List<UserInfo> userInfos = userService.findAll1(example);
+        List<UserVO> userInfos = userService.findAll1(example);
 
         return ResponseBodyPage
                 .ok(userInfos, pageSize);
-    }
-
-    /**
-     * 异常测试
-     * @return
-     */
-    @RequestMapping(value = "exception", method = RequestMethod.GET)
-    public ResponseBodyPage<UserInfo> exception() {
-        //throw new BizException();
-        throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR, CommonBizStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    /**
-     * http status test
-     * @param status
-     * @return
-     */
-    @RequestMapping(value = "status", method = RequestMethod.GET)
-    public ResponseEntity status(@RequestParam(value = "status") Integer status) {
-        return ResponseEntity
-                .status(status)
-                .body("faild");
     }
 
 }

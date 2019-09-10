@@ -1,37 +1,25 @@
 package org.holy.spring.boot.quick.service;
 
-import org.holy.spring.boot.quick.domain.UserInfo;
-import org.holy.spring.boot.quick.model.UserVo;
+import org.holy.spring.boot.quick.bean.model.user.TokenVO;
+import org.holy.spring.boot.quick.bean.model.user.UserInfoVO;
+import org.holy.spring.boot.quick.bean.model.user.UserVO;
+import org.holy.spring.boot.quick.component.security.UserPrincipal;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends BaseService<UserVO> {
 
-    /**
-     * 模拟
-     * @return
-     */
-    List<UserInfo> findAll();
+    TokenVO login(UserVO userVO);
 
-    /**
-     * 模拟
-     * @param example
-     * @return
-     */
-    List<UserInfo> findAll1(Example example);
+    void logout(UserPrincipal userPrincipal);
 
-    /**
-     * 模拟
-     * @param id
-     * @return
-     */
-    UserVo selectById(Long id);
+    UserInfoVO info(UserPrincipal userPrincipal);
 
-    /**
-     * 模拟
-     * @param id
-     * @return
-     */
-    UserVo selectById2(Long id);
+    UserVO selectById(Long id);
+
+    List<UserVO> findAll();
+
+    List<UserVO> findAll1(Example example);
+
 }

@@ -28,7 +28,11 @@ public class UserPrincipal implements UserDetails, CredentialsContainer {
     /**
      * 账户id
      */
-    private Long id;
+    private Long userId;
+    /**
+     * 账户code
+     */
+    private String userCode;
     /**
      * 密码
      */
@@ -59,5 +63,6 @@ public class UserPrincipal implements UserDetails, CredentialsContainer {
      */
     @Override
     public void eraseCredentials() {
+        password = null;
     }
 }

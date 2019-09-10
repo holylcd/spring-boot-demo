@@ -6,7 +6,7 @@ server:
 #spring
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/quick?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: 960216
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -28,11 +28,21 @@ spring:
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       use-global-data-source-stat: true
       async-close-connection-enable: true
-      aop-patterns: org.holy.tkmapper.service.*
+      aop-patterns: org.holy.spring.boot.quick.service.*
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
     # property-naming-strategy: SNAKE_CASE
+  redis:
+    host: 192.168.12.100
+    port: 6379
+    password: 123qwe123qwe
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
 
 
 # mybatis

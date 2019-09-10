@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Getter
-public class JwtConfig {
+class JwtConfig {
     /**
      * JWT 密钥
      */

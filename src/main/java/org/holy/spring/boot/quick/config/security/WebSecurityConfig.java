@@ -1,17 +1,16 @@
 package org.holy.spring.boot.quick.config.security;
 
+import org.holy.spring.boot.quick.component.security.CustomAuthenticationEntryPoint;
 import org.holy.spring.boot.quick.component.security.CustomAuthenticationProvider;
-import org.holy.spring.boot.quick.component.security.JwtAuthenticationEntryPoint;
-import org.holy.spring.boot.quick.component.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * web security config
@@ -29,11 +28,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
-    @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Override
     public void configure(AuthenticationManagerBuilder builder) {
@@ -43,27 +40,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.cors()
-                //.and()
-
-                //.csrf()
-                //.disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
+                // CORS 攻击
+                .cors()
                 .and()
 
+                // 防止 CSRF 攻击
+                .csrf()
+                .disable()
+
+                // 认证异常处理
+                .exceptionHandling()
+                // 鉴权异常统一处理
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .and()
+
+                // 禁用 session
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 
+                // 请求放通
                 .authorizeRequests()
-                .antMatchers("/api/user")
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/user/login")
                 .permitAll()
 
+                //剩余资源需要认证
                 .anyRequest()
                 .authenticated();
-
-        // Add our custom JWT security filter
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

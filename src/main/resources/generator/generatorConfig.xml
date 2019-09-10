@@ -4,7 +4,7 @@
   ~
   ~ Copyright (c) 2014 abel533@gmail.com
   ~
-  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ PermissionDO is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
   ~ in the Software without restriction, including without limitation the rights
   ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -39,7 +39,7 @@
         <plugin type="org.holy.mybatis.generator.lombok.plugin.LombokPlugin" />
         <!--tk mybatis mapper plugin-->
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="org.holy.spring.boot.quick.component.magger.BaseMapper"/>
+            <property name="mappers" value="org.holy.spring.boot.quick.component.mapper.BaseMapper"/>
             <property name="caseSensitive" value="true"/>
         </plugin>
 
@@ -57,7 +57,7 @@
 
         <!--数据库连接 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai&amp;useSSL=false"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/quick?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai&amp;useSSL=false"
                         userId="root"
                         password="960216">
             <property name="useInformationSchema" value="true"/>
@@ -80,7 +80,36 @@
         </javaClientGenerator>
 
         <!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等-->
-        <table tableName="user_info" domainObjectName="UserInfo"
+        <!--用户表-->
+        <table tableName="sys_user" domainObjectName="User"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        </table>
+        <!--角色表-->
+        <table tableName="sys_role" domainObjectName="Role"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        </table>
+        <!--权限表-->
+        <table tableName="sys_permission" domainObjectName="Permission"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        </table>
+        <!--用户角色表-->
+        <table tableName="sys_user_role" domainObjectName="UserRole"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<generatedKey column="id" sqlStatement="JDBC"/>-->
+        </table>
+        <!--角色权限表-->
+        <table tableName="sys_role_permission" domainObjectName="RolePermission"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
